@@ -26,50 +26,16 @@
 * **분석 대상:** 미세침 흡인(FNA) 이미지에서 추출된 세포 핵의 형태적 특징
 * **변수 구성:** 총 32개
     * **ID:** 환자 식별 번호 (제거)
-    * **Diagnosis (타겟):** **M (악성, 1)** 또는 **B (양성, 0)**
+    * **Diagnosis (타겟):** **M (암, 1)** 또는 **B (양성, 0)**
     * **30개 Feature:** 10가지 세포핵 측정 항목 (radius, texture, perimeter, area, smoothness, compactness, concavity, concave points, symmetry, fractal dimension)에 대해 **Mean, Standard Error (SE), Worst** 통계량을 계산하여 구성.
 * **샘플 개수:** 총 569개 (양성 357개, 악성 212개)
 * **결측치:** 없음
- #   Column                   Non-Null Count  Dtype
----  ------                   --------------  -----
- 0   id                       569 non-null    int64
- 1   diagnosis                569 non-null    object
- 2   radius_mean              569 non-null    float64
- 3   texture_mean             569 non-null    float64
- 4   perimeter_mean           569 non-null    float64
- 5   area_mean                569 non-null    float64
- 6   smoothness_mean          569 non-null    float64
- 7   compactness_mean         569 non-null    float64
- 8   concavity_mean           569 non-null    float64
- 9   concave points_mean      569 non-null    float64
- 10  symmetry_mean            569 non-null    float64
- 11  fractal_dimension_mean   569 non-null    float64
- 12  radius_se                569 non-null    float64
- 13  texture_se               569 non-null    float64
- 14  perimeter_se             569 non-null    float64
- 15  area_se                  569 non-null    float64
- 16  smoothness_se            569 non-null    float64
- 17  compactness_se           569 non-null    float64
- 18  concavity_se             569 non-null    float64
- 19  concave points_se        569 non-null    float64
- 20  symmetry_se              569 non-null    float64
- 21  fractal_dimension_se     569 non-null    float64
- 22  radius_worst             569 non-null    float64
- 23  texture_worst            569 non-null    float64
- 24  perimeter_worst          569 non-null    float64
- 25  area_worst               569 non-null    float64
- 26  smoothness_worst         569 non-null    float64
- 27  compactness_worst        569 non-null    float64
- 28  concavity_worst          569 non-null    float64
- 29  concave points_worst     569 non-null    float64
- 30  symmetry_worst           569 non-null    float64
- 31  fractal_dimension_worst  569 non-null    float64
- 32  Unnamed: 32              0 non-null      float64
-dtypes: float64(31), int64(1), object(1) 
+ <img width="2644" height="1669" alt="data_info_summary" src="https://github.com/user-attachments/assets/026b42d8-d712-40ca-aaab-1eb1ec18aba5" />
+
 
 ### 📊 주요 데이터 탐색 결과 (EDA)
 #### 1. 타겟 변수 분포
-악성(1)과 양성(0) 샘플 비율이 약 2:3으로 **약간의 불균형**은 있으나, 모델 학습을 방해할 정도는 아닙니다. `stratify` 옵션을 사용하여 학습 및 테스트 세트에서 이 비율을 유지했습니다.
+악성(1)과 양성(0) 샘플 비율이 약 2:3으로 **약간의 불균형**은 있으나, 모델 학습을 방해할 정도는 아닙니다.
 ```python
 df['diagnosis'] = df['diagnosis'].map({'M': 1, 'B': 0})
 
@@ -81,13 +47,15 @@ df['diagnosis'] = df['diagnosis'].map({'M': 1, 'B': 0})
 <img width="800" height="600" alt="target_distribution" src="https://github.com/user-attachments/assets/bd27f403-a8bc-48a3-a445-beedb5755508" />
 
 #### 2. 특징 간 상관관계 (Mean Features)
+* Permutation Importance는 특정 특징의 값을 무작위로 섞었을 때 모델 성능이 얼마나 감소하는지를 측정합니다.
+* 모델 종류에 상관없이 적용 가능하며, 다중공선성이 있는 데이터에서도 신뢰도가 높습니다.
+
 `radius`, `perimeter`, `area` 등 세포핵의 크기와 관련된 특징들 간에 **다중공선성**이 관찰되었습니다. 
-하지만 해석력의 상실을 방지하기 위해  PCA를 적용하지 않고, 상관관계가 높다는 사실을 인지한 상태에서 **Random Forest** 같이 트리 기반 모델을 활용하고, **Permutation Importance**로 각 변수의 순수한 영향력을 분석하였습니다.
-# Permutation Importance는 특정 특징의 값을 무작위로 섞었을 때 모델 성능이 얼마나 감소하는지를 측정합니다.
-# 모델 종류에 상관없이 적용 가능하며, 다중공선성이 있는 데이터에서도 신뢰도가 높습니다.
+하지만 해석력의 상실을 방지하기 위해  PCA를 적용하지 않고, 상관관계가 높다는 사실을 인지한 상태에서 **Random Forest** 같은 트리 기반 모델과, 
+**Permutation Importance**로 각 변수의 순수한 영향력을 분석합니다.
 
 ```python
-features_mean = list(df.columns[1:11]) # 'mean'이 포함된 특징만 선택
+features_mean = list(df.columns[1:11]) # 
     corr = df[features_mean].corr()
 
     plt.figure(figsize=(12, 10))
@@ -187,8 +155,6 @@ svm_model = grid_search_svm.best_estimator_
     sorted_idx_mlp = perm_importance_mlp.importances_mean.argsort()
 
     # --- Random Forest 모델: Gini Importance (Mean Decrease in Impurity) ---
-    # Random Forest는 모델 훈련 과정에서 각 특징이 불순도(impurity)를 얼마나 감소시키는지를 기반으로 중요도를 계산합니다.
-    # 계산 속도가 빠르지만, 상관관계가 높은 특징들 사이에서는 중요도가 한쪽으로 쏠릴 수 있습니다.
     rf_importance = rf_model.feature_importances_
     sorted_idx_rf = rf_importance.argsort()
 ```
