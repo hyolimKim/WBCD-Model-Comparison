@@ -30,14 +30,75 @@
     * **30개 Feature:** 10가지 세포핵 측정 항목 (radius, texture, perimeter, area, smoothness, compactness, concavity, concave points, symmetry, fractal dimension)에 대해 **Mean, Standard Error (SE), Worst** 통계량을 계산하여 구성.
 * **샘플 개수:** 총 569개 (양성 357개, 악성 212개)
 * **결측치:** 없음
- 
+ #   Column                   Non-Null Count  Dtype
+---  ------                   --------------  -----
+ 0   id                       569 non-null    int64
+ 1   diagnosis                569 non-null    object
+ 2   radius_mean              569 non-null    float64
+ 3   texture_mean             569 non-null    float64
+ 4   perimeter_mean           569 non-null    float64
+ 5   area_mean                569 non-null    float64
+ 6   smoothness_mean          569 non-null    float64
+ 7   compactness_mean         569 non-null    float64
+ 8   concavity_mean           569 non-null    float64
+ 9   concave points_mean      569 non-null    float64
+ 10  symmetry_mean            569 non-null    float64
+ 11  fractal_dimension_mean   569 non-null    float64
+ 12  radius_se                569 non-null    float64
+ 13  texture_se               569 non-null    float64
+ 14  perimeter_se             569 non-null    float64
+ 15  area_se                  569 non-null    float64
+ 16  smoothness_se            569 non-null    float64
+ 17  compactness_se           569 non-null    float64
+ 18  concavity_se             569 non-null    float64
+ 19  concave points_se        569 non-null    float64
+ 20  symmetry_se              569 non-null    float64
+ 21  fractal_dimension_se     569 non-null    float64
+ 22  radius_worst             569 non-null    float64
+ 23  texture_worst            569 non-null    float64
+ 24  perimeter_worst          569 non-null    float64
+ 25  area_worst               569 non-null    float64
+ 26  smoothness_worst         569 non-null    float64
+ 27  compactness_worst        569 non-null    float64
+ 28  concavity_worst          569 non-null    float64
+ 29  concave points_worst     569 non-null    float64
+ 30  symmetry_worst           569 non-null    float64
+ 31  fractal_dimension_worst  569 non-null    float64
+ 32  Unnamed: 32              0 non-null      float64
+dtypes: float64(31), int64(1), object(1) 
 
 ### 📊 주요 데이터 탐색 결과 (EDA)
 #### 1. 타겟 변수 분포
 악성(1)과 양성(0) 샘플 비율이 약 2:3으로 **약간의 불균형**은 있으나, 모델 학습을 방해할 정도는 아닙니다. `stratify` 옵션을 사용하여 학습 및 테스트 세트에서 이 비율을 유지했습니다.
+```python
+df['diagnosis'] = df['diagnosis'].map({'M': 1, 'B': 0})
+
+    print("\n--- 2. 데이터 샘플 확인 (Head) ---")
+    print(df.head())
+
+    print("\n--- 3. 타겟 변수 분포 확인 ---")
+```
+<img width="800" height="600" alt="target_distribution" src="https://github.com/user-attachments/assets/bd27f403-a8bc-48a3-a445-beedb5755508" />
 
 #### 2. 특징 간 상관관계 (Mean Features)
-`radius`, `perimeter`, `area` 등 세포핵의 크기와 관련된 특징들 간에 **매우 높은 양의 상관관계(다중공선성)**가 관찰되었습니다. 이는 모델의 해석(예: 회귀 계수)을 어렵게 만들 수 있어, 본 분석에서는 **Permutation Importance**와 같은 더 신뢰성 있는 해석 기법을 사용했습니다.
+`radius`, `perimeter`, `area` 등 세포핵의 크기와 관련된 특징들 간에 **다중공선성**이 관찰되었습니다. 
+하지만 해석력의 상실을 방지하기 위해  PCA를 적용하지 않고, 상관관계가 높다는 사실을 인지한 상태에서 **Random Forest** 같이 트리 기반 모델을 활용하고, **Permutation Importance**로 각 변수의 순수한 영향력을 분석하였습니다.
+# Permutation Importance는 특정 특징의 값을 무작위로 섞었을 때 모델 성능이 얼마나 감소하는지를 측정합니다.
+# 모델 종류에 상관없이 적용 가능하며, 다중공선성이 있는 데이터에서도 신뢰도가 높습니다.
+
+```python
+features_mean = list(df.columns[1:11]) # 'mean'이 포함된 특징만 선택
+    corr = df[features_mean].corr()
+
+    plt.figure(figsize=(12, 10))
+    sns.heatmap(corr, annot=True, fmt=".2f", cmap='coolwarm')
+    plt.title('주요 특징 간 상관관계 히트맵 (Mean Features)')
+    plt.savefig("correlation_heatmap.png")
+    print("INFO: 'correlation_heatmap.png' ")
+
+```
+<img width="1200" height="1000" alt="correlation_heatmap" src="https://github.com/user-attachments/assets/e2bd9218-287f-4c2d-ae43-c2820c1b6555" />
+
 
 ---
 
@@ -111,12 +172,14 @@ svm_model = grid_search_svm.best_estimator_
     print(f"MLP 모델 AUC: {roc_auc_mlp:.4f}")
     print(f"Random Forest 모델 AUC: {roc_auc_rf:.4f}")
 ```
+<img width="1000" height="800" alt="roc_curve_comparison" src="https://github.com/user-attachments/assets/54e10ba7-e245-4cbe-85dd-6553169a10a3" />
+
+
 ## ⚙️ 5. 특징 중요도 분석 (Feature Importance)
 
 ```python
 # --- SVM, MLP 모델: Permutation Importance ---
-    # Permutation Importance는 특정 특징의 값을 무작위로 섞었을 때 모델 성능이 얼마나 감소하는지를 측정합니다.
-    # 모델 종류에 상관없이 적용 가능하며, 다중공선성이 있는 데이터에서도 신뢰도가 높습니다.
+    
     perm_importance_svm = permutation_importance(svm_model, X_test_scaled, y_test, n_repeats=30, random_state=42, n_jobs=-1)
     sorted_idx_svm = perm_importance_svm.importances_mean.argsort()
 
@@ -130,3 +193,13 @@ svm_model = grid_search_svm.best_estimator_
     sorted_idx_rf = rf_importance.argsort()
 ```
 <img width="2400" height="1000" alt="feature_importance" src="https://github.com/user-attachments/assets/49227e71-c6c0-4c3c-9cc3-d3689051406c" />
+
+## ⚙️ 6. 분석 결과
+
+* 1. 특징 중요도 분석 결과, 세 모델 모두에서 'worst' 접두사가 붙은 특징들이 진단에 핵심적인 역할을 함을 확인했습니다.
+➡️종양의 최종 상태가 악성/양성 판별에 가장 결정적인 정보임을 시사합니다.
+*2.
+  *  세 모델 중 SVM 가장 높은 AUC를 기록했으나 그 차이는 미미합니다.
+  *  Random Forest는 높은 성능과 함께 자체적인 특징 중요도 정보를 제공하는 장점이 있습니다.
+  *  MLP 은  매우 경쟁력 있는 성능을 보여주었습니다.
+따라서 실제 임상 적용 시, 높은 성능을 유지하면서도 모델의 작동 방식을 설명하기 용이한 Random Forest나 SVM이 복잡한 MLP보다 더 선호될 수 있습니다.
