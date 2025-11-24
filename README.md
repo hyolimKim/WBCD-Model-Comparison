@@ -1,4 +1,4 @@
-# -SVM-MLP-Random-Forest-
+# WBCD-Model-Comparison
 WBCD 기반 유방암 악성/양성 진단 유효성 비교 및 특징 중요도 해석 연구
 📑 유방암 진단 유효성 비교 및 특징 중요도 해석 연구 (SVM, MLP, Random Forest)
 
