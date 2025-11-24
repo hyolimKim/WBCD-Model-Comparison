@@ -1,6 +1,9 @@
 # -SVM-MLP-Random-Forest-
 WBCD 기반 유방암 악성/양성 진단 유효성 비교 및 특징 중요도 해석 연구
 📑 유방암 진단 유효성 비교 및 특징 중요도 해석 연구 (SVM, MLP, Random Forest)
+print(f"\nSVM 최적 파라미터: {grid_search_svm.best_params_}")
+    print(f"최적 교차 검증 AUC 점수: {grid_search_svm.best_score_:.4f}")
+    svm_model = grid_search_svm.best_estimator_
 
 📌 1. 프로젝트 개요 (Project Overview)
 🎯 프로젝트 목표
