@@ -25,7 +25,7 @@
 * **데이터 출처:** UCI Machine Learning Repository (Wisconsin Breast Cancer Diagnostic Dataset)
 * **분석 대상:** 미세침 흡인(FNA) 이미지에서 추출된 세포 핵의 형태적 특징
 * **변수 구성:** 총 32개
-    * **ID:** 환자 식별 번호 (제거)
+    * **ID:** 환자 식별 번호 
     * **Diagnosis (타겟):** **M (암, 1)** 또는 **B (양성, 0)**
     * **30개 Feature:** 10가지 세포핵 측정 항목 (radius, texture, perimeter, area, smoothness, compactness, concavity, concave points, symmetry, fractal dimension)에 대해 **Mean, Standard Error (SE), Worst** 통계량을 계산하여 구성.
 * **샘플 개수:** 총 569개 (양성 357개, 악성 212개)
@@ -55,7 +55,7 @@ df['diagnosis'] = df['diagnosis'].map({'M': 1, 'B': 0})
 **Permutation Importance**로 각 변수의 순수한 영향력을 분석합니다.
 
 ```python
-features_mean = list(df.columns[1:11]) # 
+features_mean = list(df.columns[1:11]) 
     corr = df[features_mean].corr()
 
     plt.figure(figsize=(12, 10))
