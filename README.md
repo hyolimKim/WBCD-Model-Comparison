@@ -110,6 +110,27 @@ X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
 ```
 
+### 1-1. 모델학습 
+```python
+# --- 4.1. SVM 모델 (GridSearchCV) ---
+    print("\n--- SVM 모델 학습 및 평가 ---")
+    param_grid_svm = {'C': [0.1, 1, 10, 100], 'gamma': [0.1, 0.01, 0.001], 'kernel': ['rbf']}
+    grid_search_svm = GridSearchCV(SVC(probability=True, random_state=42), param_grid_svm, cv=5, scoring='roc_auc', n_jobs=-1, verbose=0)
+    grid_search_svm.fit(X_train_scaled, y_train)
+    svm_model = grid_search_svm.best_estimator_
+    print(f"SVM 최적 파라미터: {grid_search_svm.best_params_}")
+    
+    # --- 4.2. MLP 모델 ---
+    print("\n--- MLP 모델 학습 및 평가 ---")
+    mlp_model = MLPClassifier(hidden_layer_sizes=(100, 50), max_iter=1000, alpha=0.0001, solver='adam', random_state=42)
+    mlp_model.fit(X_train_scaled, y_train)
+
+    # --- 4.3. Random Forest 모델 ---
+    print("\n--- Random Forest 모델 학습 및 평가 ---")
+    rf_model = RandomForestClassifier(n_estimators=100, random_state=42)
+    rf_model.fit(X_train_scaled, y_train)
+```
+
 ### 2. SVM 하이퍼파라미터 튜닝
 Support Vector Machine (SVM) 모델의 성능을 최적화하기 위해 핵심 하이퍼파라미터인 $C$와 $\gamma$를 튜닝했습니다.
 
