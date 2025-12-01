@@ -140,7 +140,7 @@ $\text{SVM}$과 $\text{Random Forest}$ 모두 10-Fold CV 결과, 평균 $\text{A
 
 
 ### 3.2. 임계값 기반 임상 의사결정 지원 테이블 (Random Forest 기준)
-예측 확률 $\text{Threshold}$ 변화에 따른 민감도(Sensitivity) 및 특이도(Specificity) 변화를 분석하여, 임상 환경별 최적의 의사결정 기준을 제시합니다.
+예측 확률 $\text{Threshold}$ 변화에 따른 민감도(Sensitivity) 및 특이도(Specificity) 변화를 분석하여, 임상 환경별 최적의 의사결정 기준을 도출합니다.
 | Threshold | Sensitivity (악성 놓칠 확률 $\downarrow$) | Specificity (양성을 악성으로 진단할 확률 $\downarrow$) | 임상적 의미 |
 | :---: | :---: | :---: | :--- |
 | **0.1** | $\mathbf{1.0000}$ | $0.8056$ | **최대 민감도 확보:** 악성(암)을 놓치지 않아야 하는 1차 스크리닝에 적합. |
