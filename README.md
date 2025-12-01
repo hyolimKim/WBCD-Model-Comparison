@@ -154,7 +154,7 @@ $\text{SVM}$과 $\text{Random Forest}$ 모두 10-Fold CV 결과, 평균 $\text{A
 ### 4.1. SHAP Summary Plot: 전역적 특징 중요도 분석
 * **분석 결과**: concave points_worst, perimeter_worst, radius_worst 순으로 악성($M=1$) 예측에 가장 큰 기여를 했습니다.
 * **특징 해석**: 플롯에서 **붉은색 점(특징의 높은 값)**이 **양의 $\text{SHAP}$ 값(악성 예측 증가)**으로 광범위하게 분포하는 것을 확인했습니다.
-* **임상적 의미**: 종양의 최종 상태(worst), 특히 **경계의 불규칙성(concave points)**과 **크기(perimeter, radius)**가 클수록 악성일 확률이 강하게 증가합니다.
+* **임상적 의미**: 종양의 최종 상태(worst), 특히 **경계의 불규칙성(concave points)**과 **크기(area, radius)**가 클수록 악성일 확률이 강하게 증가합니다.
 * <img width="771" height="974" alt="shap_summary_plot" src="https://github.com/user-attachments/assets/3f140665-7faa-433e-a27d-b67f09b23ce5" />
 
 
