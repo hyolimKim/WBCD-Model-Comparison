@@ -160,11 +160,11 @@ $\text{SVM}$과 $\text{Random Forest}$ 모두 10-Fold CV 결과, 평균 $\text{A
 
 
 ## 4.2. SHAP Dependence Plot: 비선형적 관계 및 상호작용 분석
-concave points_worst 특징에 대한 $\text{SHAP}$ 의존성 플롯을 분석하여 모델이 학습한 복잡한 패턴을 시각화했습니다.
+concave points_worst 특징에 대한 SHAP의존성 플롯을 분석하여 모델이 학습한 복잡한 패턴을 시각화했습니다.
 <img width="646" height="488" alt="shap_dependence_plot" src="https://github.com/user-attachments/assets/c4cd8099-43ff-43c6-93c6-8262bdfb00bf" />
-X$축의 concave points_worst 값이 특정 지점 이상으로 증가할 때, $Y$축의 $\text{SHAP}$ 값(악성 예측 기여도)이 급격하게(비선형적) 상승하는 패턴을 보입니다.
+X축의 concave points_worst 값이 특정 지점 이상으로 증가할 때, Y축의 SHAP 값(악성 예측 기여도)이 급격하게(비선형적) 상승하는 패턴을 보입니다.
 * **비선형성 해석**: 이는 선형 모델로는 포착하기 어려운, **"특징 값이 임계치를 넘어설 때 악성 위험이 기하급수적으로 증가한다"**는 임상적으로 중요한 복잡한 관계를 $\text{Random Forest}$가 효과적으로 학습했음을 의미합니다.
-* **상호작용 효과**: 플롯 내의 수직적 색상 변화는 $concave\_points\_worst$ 외의 다른 특징(자동 탐지된 $\text{interaction index}$)과 예측 간에 상호작용 효과가 존재함을 강력하게 암시합니다.
+* **상호작용 효과**: 플롯 내의 수직적 색상 변화는 concave points_worst 외의 다른 특징과 예측 간에 상호작용 효과가 존재함을 강력하게 암시합니다.
 
 ## ⚙️ 5. 특징 중요도 분석 (Feature Importance)
 
@@ -218,9 +218,9 @@ X$축의 concave points_worst 값이 특정 지점 이상으로 증가할 때, $
 ## 📜 6. 결론 및 제언 (Conclusion & Suggestion)
 
 ### 최종요약
-* **성능**: 모든 모델이 목표 $\text{AUC}$($\geq 0.95$)를 초과 달성했으며, $\text{SVM}$이 $0.9960$으로 가장 높은 $\text{Test AUC}$를 기록했습니다.
-* **신뢰성**:$\text{K}$-Fold $\text{CV}$를 통해 $\text{SVM}(\sigma=0.0062)$과 $\text{Random Forest}(\sigma=0.0147)$ 모두 매우 안정적인 성능을 보였습니다.
-* **해석력**:$\text{SHAP}$ 분석을 통해 **worst concave points**와 **worst radius**가 악성 진단의 핵심 요인이며, 이들이 예측에 비선형적으로 기여함을 명확히 해석했습니다.
+* **성능**: 모든 모델이 목표 AUC 를 초과 달성했으며,SVM이 0.9960으로 가장 높은 {Test AUC}를 기록했습니다.
+* **신뢰성**: k-fold cv를 통해 svm과 Random Forest 모두 매우 안정적인 성능을 보였습니다.
+* **해석력**:SHAP 분석을 통해 **worst concave points**와 **worst radius**가 악성 진단의 핵심 요인이며, 이들이 예측에 비선형적으로 기여함을 명확히 해석했습니다.
   
 ### 최종 모델 성능 (ROC-AUC)
 | 모델 | 최종 AUC 점수 (테스트 세트) |
