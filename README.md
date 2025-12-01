@@ -124,7 +124,7 @@ $\text{SVM}$과 $\text{Random Forest}$ 모두 10-Fold CV 결과, 평균 $\text{A
 | **SVM** | $\mathbf{0.9915}$ | $\mathbf{0.0062}$ | **가장 안정적** (낮은 $\sigma$로 일반화 능력 우수) |
 | **Random Forest** | $0.9847$ | $0.0147$ | **매우 안정적** |
 | **MLP** | (미분석) | (미분석) | - |
-<img width="1000" height="800" alt="roc_curve_comparison" src="https://github.com/user-attachments/assets/6930389a-afd6-4efd-95cb-1c8278658ba3" />
+
 <img width="1000" height="800" alt="roc_kfold_Random_Forest" src="https://github.com/user-attachments/assets/ab8f5e54-0965-4e64-9810-b33bca07163a" />
 <img width="1000" height="800" alt="roc_kfold_SVM" src="https://github.com/user-attachments/assets/c7bb52cd-306d-4523-a146-906204391a43" />
 
@@ -146,7 +146,7 @@ $\text{SVM}$과 $\text{Random Forest}$ 모두 10-Fold CV 결과, 평균 $\text{A
 ### 4.1. SHAP Summary Plot: 전역적 특징 중요도 분석
 * **분석 결과**: concave points_worst, perimeter_worst, radius_worst 순으로 악성($M=1$) 예측에 가장 큰 기여를 했습니다.
 * **특징 해석**: 플롯에서 **붉은색 점(특징의 높은 값)**이 **양의 $\text{SHAP}$ 값(악성 예측 증가)**으로 광범위하게 분포하는 것을 확인했습니다.
-* **임상적 의미**: 종양의 최종 상태(worst), 특히 **경계의 불규칙성(concave points)**과 **크기(perimeter, radius)**가 클수록 악성일 확률이 강하게 증가하며, 이는 병리학적 지식(악성 종양의 침범성 및 비정형적 성장)과 완벽하게 일치합니다.
+* **임상적 의미**: 종양의 최종 상태(worst), 특히 **경계의 불규칙성(concave points)**과 **크기(perimeter, radius)**가 클수록 악성일 확률이 강하게 증가합니다.
 * <img width="771" height="974" alt="shap_summary_plot" src="https://github.com/user-attachments/assets/3f140665-7faa-433e-a27d-b67f09b23ce5" />
 
 
@@ -221,4 +221,4 @@ X$축의 concave points_worst 값이 특정 지점 이상으로 증가할 때, $
 | **MLP** | **0.9950** |
 | **Random Forest** | **0.9929** |
 
-
+<img width="1000" height="800" alt="roc_curve_comparison" src="https://github.com/user-attachments/assets/6930389a-afd6-4efd-95cb-1c8278658ba3" />
