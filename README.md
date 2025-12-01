@@ -67,6 +67,22 @@ features_mean = list(df.columns[1:11])
 ```
 <img width="1200" height="1000" alt="correlation_heatmap" src="https://github.com/user-attachments/assets/e2bd9218-287f-4c2d-ae43-c2820c1b6555" />
 
+## ⚙️ 2-1. 특징 중요도 분석 (Feature Importance)
+
+```python
+# --- SVM, MLP 모델: Permutation Importance ---
+    
+    perm_importance_svm = permutation_importance(svm_model, X_test_scaled, y_test, n_repeats=30, random_state=42, n_jobs=-1)
+    sorted_idx_svm = perm_importance_svm.importances_mean.argsort()
+
+    perm_importance_mlp = permutation_importance(mlp_model, X_test_scaled, y_test, n_repeats=30, random_state=42, n_jobs=-1)
+    sorted_idx_mlp = perm_importance_mlp.importances_mean.argsort()
+
+    # --- Random Forest 모델: Gini Importance (Mean Decrease in Impurity) ---
+    rf_importance = rf_model.feature_importances_
+    sorted_idx_rf = rf_importance.argsort()
+```
+<img width="2400" height="1000" alt="feature_importance" src="https://github.com/user-attachments/assets/49227e71-c6c0-4c3c-9cc3-d3689051406c" />
 
 ---
 
@@ -166,22 +182,7 @@ X축의 concave points_worst 값이 특정 지점 이상으로 증가할 때, Y�
 * **비선형성 해석**: 이는 선형 모델로는 포착하기 어려운, **"특징 값이 임계치를 넘어설 때 악성 위험이 기하급수적으로 증가한다"** 는 임상적으로 중요한 복잡한 관계를 모델이 효과적으로 학습했음을 의미합니다.
 * **상호작용 효과**: 플롯 내의 수직적 색상 변화는 concave points_worst 외의 다른 특징과 예측 간에 상호작용 효과가 존재함을 강력하게 암시합니다.
 
-## ⚙️ 5. 특징 중요도 분석 (Feature Importance)
 
-```python
-# --- SVM, MLP 모델: Permutation Importance ---
-    
-    perm_importance_svm = permutation_importance(svm_model, X_test_scaled, y_test, n_repeats=30, random_state=42, n_jobs=-1)
-    sorted_idx_svm = perm_importance_svm.importances_mean.argsort()
-
-    perm_importance_mlp = permutation_importance(mlp_model, X_test_scaled, y_test, n_repeats=30, random_state=42, n_jobs=-1)
-    sorted_idx_mlp = perm_importance_mlp.importances_mean.argsort()
-
-    # --- Random Forest 모델: Gini Importance (Mean Decrease in Impurity) ---
-    rf_importance = rf_model.feature_importances_
-    sorted_idx_rf = rf_importance.argsort()
-```
-<img width="2400" height="1000" alt="feature_importance" src="https://github.com/user-attachments/assets/49227e71-c6c0-4c3c-9cc3-d3689051406c" />
 
 ## ⚙️ 5.1 분석 결과
 
