@@ -94,7 +94,15 @@ X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
 ```
 
-###2. SVM 하이퍼파라미터 튜닝
+### 2. SVM 하이퍼파라미터 튜닝
+Support Vector Machine (SVM) 모델의 성능을 최적화하기 위해 핵심 하이퍼파라미터인 $C$와 $\gamma$를 튜닝했습니다.
+
+| 파라미터 | 역할 | 탐색 범위 |
+| :--- | :--- | :--- |
+| **C (Cost)** | 오분류에 대한 **벌칙** (규제 강도) | `[0.1, 1, 10, 100, 1000]` |
+| **$\gamma$ (Gamma)** | 하나의 데이터 샘플이 미치는 **영향 범위** (결정 경계의 복잡도) | `[0.1, 0.01, 0.001, 0.0001]` |
+| **Kernel** | 데이터를 고차원 공간으로 매핑하는 함수 | `['rbf']` (고정) |
+
 ```python
 # GridSearchCV를 이용한 SVM 튜닝 코드
 param_grid_svm = {
@@ -221,4 +229,3 @@ X$축의 concave points_worst 값이 특정 지점 이상으로 증가할 때, $
 | **MLP** | **0.9950** |
 | **Random Forest** | **0.9929** |
 
-<img width="1000" height="800" alt="roc_curve_comparison" src="https://github.com/user-attachments/assets/6930389a-afd6-4efd-95cb-1c8278658ba3" />
