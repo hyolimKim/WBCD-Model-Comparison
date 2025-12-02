@@ -250,7 +250,7 @@ X축의 concave points_worst 값이 특정 지점 이상으로 증가할 때, Y�
 ### 최종요약
 * **성능**: 모든 모델이 목표 AUC 를 초과 달성했으며,SVM이 0.9960으로 가장 높은 {Test AUC}를 기록했습니다.
 * **신뢰성**: k-fold cv를 통해 svm과 Random Forest 모두 매우 안정적인 성능을 보였습니다.
-* **해석력**:SHAP 분석을 통해 **worst concave points**와 **worst radius**가 악성 진단의 핵심 요인이며, 이들이 예측에 비선형적으로 기여함을  해석했습니다.
+* **해석력**: SHAP 분석을 통해 **worst concave points**와 **area worst**가 악성 진단의 핵심 요인이며, 이들이 예측에 비선형적으로 기여함을  해석했습니다.
   
 ### 최종 모델 성능 (ROC-AUC)
 | 모델 | 최종 AUC 점수 (테스트 세트) |
