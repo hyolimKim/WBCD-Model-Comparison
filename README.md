@@ -23,7 +23,7 @@
 
 ### 📌 분석 대상 데이터 (WBCD)
 * **데이터 출처:** UCI Machine Learning Repository (Wisconsin Breast Cancer Diagnostic Dataset)
-* **분석 대상:** 미세침 흡인(FNA) 이미지에서 추출된 세포 핵의 형태적 특징
+* **분석 대상:**  세포 핵의 형태적 특징
 * **변수 구성:** 총 32개
     * **ID:** 환자 식별 번호 
     * **Diagnosis (타겟):** **M (암, 1)** 또는 **B (양성, 0)**
@@ -47,6 +47,7 @@ df['diagnosis'] = df['diagnosis'].map({'M': 1, 'B': 0})
 <img width="800" height="600" alt="target_distribution" src="https://github.com/user-attachments/assets/bd27f403-a8bc-48a3-a445-beedb5755508" />
 
 #### 2. 특징 간 상관관계 (Mean Features)
+##### 비선형 모델 선택 이유 
 `radius`, `perimeter`, `area` 등 세포핵의 크기와 관련된 특징들 간에 **다중공선성**이 관찰되었습니다. 따라서 선형 분류기가 아닌 비선형 분류기로 구성하고
 **Permutation Importance**로 각 변수의 순수한 영향력을 분석합니다.
 
@@ -249,7 +250,7 @@ X축의 concave points_worst 값이 특정 지점 이상으로 증가할 때, Y�
 ### 최종요약
 * **성능**: 모든 모델이 목표 AUC 를 초과 달성했으며,SVM이 0.9960으로 가장 높은 {Test AUC}를 기록했습니다.
 * **신뢰성**: k-fold cv를 통해 svm과 Random Forest 모두 매우 안정적인 성능을 보였습니다.
-* **해석력**:SHAP 분석을 통해 **worst concave points**와 **worst radius**가 악성 진단의 핵심 요인이며, 이들이 예측에 비선형적으로 기여함을 명확히 해석했습니다.
+* **해석력**:SHAP 분석을 통해 **worst concave points**와 **worst radius**가 악성 진단의 핵심 요인이며, 이들이 예측에 비선형적으로 기여함을  해석했습니다.
   
 ### 최종 모델 성능 (ROC-AUC)
 | 모델 | 최종 AUC 점수 (테스트 세트) |
