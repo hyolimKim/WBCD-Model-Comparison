@@ -209,7 +209,7 @@ $\text{SVM}$과 $\text{Random Forest}$ 모두 10-Fold CV 결과, 평균 $\text{A
 concave points_worst 특징에 대한 SHAP의존성 플롯을 분석하여 모델이 학습한 복잡한 패턴을 시각화했습니다.
 <img width="646" height="488" alt="shap_dependence_plot" src="https://github.com/user-attachments/assets/c4cd8099-43ff-43c6-93c6-8262bdfb00bf" />
 
-* X축의 concave points_worst 값이 특정 지점 이상으로 증가할 때, Y축의 SHAP 값(악성 예측 기여도)이 급격하게(비선형적) 상승하는 패턴을 보입니다.
+* 축의 concave points_worst 값과 area_worst값이 특정 지점 이상으로 증가할 때, 축의 SHAP 값(악성 예측 기여도)이 급격하게 상승하는 패턴을 보입니다.
 * **비선형성 해석**: 이는 선형 모델로는 포착하기 어려운, **"특징 값이 임계치를 넘어설 때 악성 위험이 기하급수적으로 증가한다"** 는 임상적으로 중요한 복잡한 관계를 모델이 효과적으로 학습했음을 의미합니다.
 * **상호작용 효과**: 플롯 내의 수직적 색상 변화는 concave points_worst 외의 다른 특징과 예측 간에 상호작용 효과가 존재함을 강력하게 암시합니다.
 
