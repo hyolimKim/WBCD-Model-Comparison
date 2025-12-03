@@ -174,6 +174,7 @@ svm_model = grid_search_svm.best_estimator_
 $\text{SVM}$과 $\text{Random Forest}$ 모두 10-Fold CV 결과, 평균 $\text{AUC}$가 높고 표준편차가 낮아($\sigma < 0.02$) 데이터 분할에 관계없이 모델이 일관된 성능을 보이며 높은 일반화 능력을 갖췄음을 확인했습니다.
 * MLP는 훈련 시간이 길고, k-Fold CV를 수행할 경우 총 계산 비용이 크게 증가하여 제외했습니다.
 * 사전 연구에서역시 MLP 훈련이 안정적이라는 것을 입증하였습니다.
+
 | 모델 | 평균 AUC ($\mathbf{\mu}$) | 표준편차 ($\mathbf{\sigma}$) | 안정성 평가 |
 | :--- | :--- | :--- | :--- |
 | **SVM** | $\mathbf{0.9915}$ | $\mathbf{0.0062}$ | **가장 안정적** (낮은 $\sigma$로 일반화 능력 우수) |
